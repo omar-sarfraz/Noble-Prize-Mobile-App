@@ -31,9 +31,14 @@ export default class App extends Component {
         :
         <View style={styles.container}>
           <Text style={styles.heading}>Noble Prize Details</Text>
-          <ScrollView>
+          {/* <ScrollView>
             {this.state.noblePrizeList.map((item, index) => <DetailsCard noblePrize={item} key={index} />)}
-          </ScrollView>
+          </ScrollView> */}
+          <FlatList
+            data={this.state.noblePrizeList}
+            renderItem={({ item }) => <DetailsCard noblePrize={item} />}
+            keyExtractor={({ item }) => item.laureates[0].id}
+          />
         </View>
     );
   }

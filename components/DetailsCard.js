@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         fontWeight: "bold",
         backgroundColor: "#fff",
-        padding: 3
+        padding: 3,
+        paddingHorizontal: 7
     },
     content: {
         padding: 5,
