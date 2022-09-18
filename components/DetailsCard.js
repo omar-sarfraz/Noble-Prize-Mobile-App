@@ -8,16 +8,21 @@ class DetailsCard extends Component {
         super(props)
     }
 
-    render({ demo } = this.props) {
+    render({ noblePrize } = this.props) {
         return (
-            <View style={styles.cardMain}>
+            <View style={styles.cardOuter}>
                 <View style={styles.header}>
-                    <Text style={styles.cardTitle}>{demo.categoryFullName.en}</Text>
-                    <Text style={styles.year}>{demo.awardYear}</Text>
+                    <Text style={styles.cardTitle}>{noblePrize.categoryFullName.en}</Text>
+                    <Text style={styles.year}>{noblePrize.awardYear}</Text>
                 </View>
-                <View style={styles.content}>
-                    <Text style={styles.contentTitle}>Awarded To:</Text>
-                    <Awardee />
+                <View style={styles.cardMain}>
+                    <View style={styles.content}>
+                        <Text style={styles.contentTitle}>Awarded To:</Text>
+                        {noblePrize.laureates.map((item) => <Awardee key={item.id} person={item} />)}
+                    </View>
+                </View>
+                <View style={styles.bottom}>
+                    <Text style={styles.year}>{noblePrize.category.en}</Text>
                 </View>
             </View>
         );
@@ -28,16 +33,19 @@ class DetailsCard extends Component {
 export default DetailsCard;
 
 const styles = StyleSheet.create({
-    cardMain: {
+    cardOuter: {
         backgroundColor: "#D4F1F4",
-        padding: 10,
         borderRadius: 5,
         marginTop: 10
+    },
+    cardMain: {
+        padding: 10,
+        borderRadius: 5,
     },
     header: {
         flexDirection: "row",
         backgroundColor: "#189AB4",
-        borderRadius: 4,
+        borderRadius: 5,
         padding: 5,
         alignItems: "center",
         justifyContent: "space-between"
@@ -55,11 +63,14 @@ const styles = StyleSheet.create({
         padding: 3
     },
     content: {
-        marginTop: 20,
         padding: 5,
     },
     contentTitle: {
-        fontSize: 15,
-        fontWeight: "bold"
+        fontSize: 20,
+        fontWeight: "600"
+    },
+    bottom: {
+        alignItems: "flex-end",
+        padding: 5
     }
 })

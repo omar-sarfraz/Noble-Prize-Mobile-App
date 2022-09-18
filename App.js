@@ -1,60 +1,38 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, FlatList } from 'react-native';
 import DetailsCard from './components/DetailsCard';
 
 export default class App extends Component {
 
   constructor() {
     super();
+    this.fetchData()
 
     this.state = {
-      // noblePrizeList: []
-      demoNoblePrize: {
-        awardYear: "1901",
-        category: {
-          en: "Chemistry",
-        },
-        categoryFullName: {
-          en: "The Nobel Prize in Chemistry",
-        },
-        prizeAmount: 150782,
-        prizeAmountAdjusted: 8722510,
-        laureates: [
-          {
-            id: "160",
-            fullName: {
-              en: "Jacobus Henricus van 't Hoff"
-            },
-            motivation: {
-              en: "in recognition of the extraordinary services he has rendered by the discovery of the laws of chemical dynamics and osmotic pressure in solutions",
-            }
-          },
-          {
-            id: "161",
-            fullName: {
-              en: "ABC"
-            },
-            motivation: {
-              en: "in recognition of the extraordinary services he has rendered by the discovery of the laws of chemical dynamics and osmotic pressure in solutions",
-            }
-          }
-        ]
-      }
+      noblePrizeList: [],
+      loading: true
     }
 
-    // fetch("https://api.nobelprize.org/2.1/nobelPrizes")
-    //   .then((response) => response.json())
-    //   .then((data) => this.setState({ noblePrizeList: data.nobelPrizes }))
+  }
 
+  fetchData() {
+    let data = fetch("https://api.nobelprize.org/2.1/nobelPrizes")
+      .then((response) => response.json())
+      .then((data) => this.setState({ noblePrizeList: data.nobelPrizes, loading: false }))
+    return data
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.heading}>Noble Prize Details</Text>
-        <DetailsCard demo={this.state.demoNoblePrize} />
-        {/* {this.state.noblePrizeList.map((item) => <DetailsCard text={item.category.en} />)} */}
-      </View>
+      this.state.loading ?
+        <View>
+          <Text>Loading...</Text>
+        </View>
+        :
+        <View style={styles.container}>
+          <Text style={styles.heading}>Noble Prize Details</Text>
+          {this.state.noblePrizeList.map((item, index) => <DetailsCard noblePrize={item} key={index} />)}
+        </View>
     );
   }
 }
