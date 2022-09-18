@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, StatusBar, FlatList } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, FlatList, ScrollView } from 'react-native';
 import DetailsCard from './components/DetailsCard';
 
 export default class App extends Component {
@@ -31,7 +31,9 @@ export default class App extends Component {
         :
         <View style={styles.container}>
           <Text style={styles.heading}>Noble Prize Details</Text>
-          {this.state.noblePrizeList.map((item, index) => <DetailsCard noblePrize={item} key={index} />)}
+          <ScrollView>
+            {this.state.noblePrizeList.map((item, index) => <DetailsCard noblePrize={item} key={index} />)}
+          </ScrollView>
         </View>
     );
   }
