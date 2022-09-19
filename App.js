@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, StatusBar, FlatList, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, FlatList, ScrollView, TouchableOpacity } from 'react-native';
 import DetailsCard from './components/DetailsCard';
 
 export default class App extends Component {
@@ -16,21 +16,29 @@ export default class App extends Component {
     this.fetchData()
   }
 
+  componentDidUpdate() {
+    this.fetchData()
+  }
+
   fetchData() {
     let data = fetch(`https://api.nobelprize.org/2.1/nobelPrizes?offset=${this.state.offset}`)
       .then((response) => response.json())
+      .then(resp => {
+        for (let i = 0; i < 25; i++) {
+          resp.nobelPrizes[i].id = i
+        }
+        return resp
+      })
       .then((data) => this.setState({ noblePrizeList: data.nobelPrizes, loading: false }))
     return data
   }
 
   onNext() {
     this.setState((state) => ({ loading: true, offset: state.offset + 25 }))
-    this.fetchData()
   }
 
   onPrev() {
     this.setState((state) => ({ loading: true, offset: state.offset - 25 }))
-    this.fetchData()
   }
 
   render() {
@@ -48,19 +56,19 @@ export default class App extends Component {
           <FlatList
             data={this.state.noblePrizeList}
             renderItem={({ item }) => <DetailsCard noblePrize={item} />}
-            keyExtractor={(item) => item.laureates[0].id}
+            keyExtractor={(item) => item.id}
           />
           <View style={styles.footer}>
             {this.state.offset ?
-              <Pressable onPress={() => this.onPrev()}>
+              <TouchableOpacity onPress={() => this.onPrev()}>
                 <Text style={styles.button}>Previous</Text>
-              </Pressable>
+              </TouchableOpacity>
               :
-              null
+              <View></View>
             }
-            <Pressable onPress={() => this.onNext}>
+            <TouchableOpacity onPress={() => this.onNext()}>
               <Text style={styles.button}>Next</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
     );
@@ -97,10 +105,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   button: {
-    paddingHorizontal: 7,
+    paddingHorizontal: 10,
     paddingVertical: 5,
     backgroundColor: "#fff",
     fontWeight: "bold",
+    fontSize: 20,
     borderRadius: 5
   }
 });

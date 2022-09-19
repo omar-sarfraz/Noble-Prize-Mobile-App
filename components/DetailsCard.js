@@ -16,10 +16,18 @@ class DetailsCard extends Component {
                     <Text style={styles.year}>{noblePrize.awardYear}</Text>
                 </View>
                 <View style={styles.cardMain}>
-                    <View style={styles.content}>
-                        <Text style={styles.contentTitle}>Awarded To:</Text>
-                        {noblePrize.laureates.map((item) => <Awardee key={item.id} person={item} />)}
-                    </View>
+                    {!noblePrize.laureates ?
+                        <View style={styles.content}>
+                            <Text style={styles.contentTitle}>
+                                {noblePrize.topMotivation.en}
+                            </Text>
+                        </View>
+                        :
+                        <View style={styles.content}>
+                            <Text style={styles.contentTitle}>Awarded To:</Text>
+                            {noblePrize.laureates.map((item) => <Awardee key={item.id} person={item} />)}
+                        </View>
+                    }
                 </View>
                 <View style={styles.bottom}>
                     <Text style={styles.year}>{noblePrize.category.en}</Text>
@@ -53,7 +61,8 @@ const styles = StyleSheet.create({
     cardTitle: {
         fontSize: 20,
         fontWeight: "bold",
-        color: "#fff"
+        color: "#fff",
+        width: "85%"
     },
     year: {
         backgroundColor: "#189AB4",
