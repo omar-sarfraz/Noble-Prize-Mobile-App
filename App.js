@@ -10,7 +10,8 @@ export default class App extends Component {
     this.state = {
       noblePrizeList: [],
       loading: true,
-      offset: 0
+      offset: 0,
+      disableNext: false
     }
 
     this.fetchData()
@@ -29,7 +30,7 @@ export default class App extends Component {
         }
         return resp
       })
-      .then((data) => this.setState({ noblePrizeList: data.nobelPrizes, loading: false }))
+      .then((data) => this.setState({ noblePrizeList: data.nobelPrizes, loading: false, disableNext: this.state.offset === 625 ? true : false }))
     return data
   }
 
@@ -66,7 +67,7 @@ export default class App extends Component {
               :
               <View></View>
             }
-            <TouchableOpacity onPress={() => this.onNext()}>
+            <TouchableOpacity onPress={() => this.onNext()} disabled={this.state.disableNext} style={{ opacity: this.state.disableNext ? 0.4 : 1 }}>
               <Text style={styles.button}>Next</Text>
             </TouchableOpacity>
           </View>
